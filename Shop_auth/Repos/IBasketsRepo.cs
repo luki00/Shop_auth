@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Shop_auth.Repo
+namespace Shop_auth.Repos
 {
-    public interface IBooksRepo
+    public interface IBasketsRepo
     {
-        BooksViewModel GetBooksListViewModel();
+        BasketsViewModel GetBasketsListViewModel();
     }
 }

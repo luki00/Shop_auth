@@ -11,8 +11,6 @@ namespace Shop_auth.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public int BookId { get; set; }
-        [ForeignKey("BookId")]
-        public Book Book { get; set; }
+        public virtual ICollection<Book> Book { get; set; }
     }
 }

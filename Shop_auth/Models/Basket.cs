@@ -16,7 +16,7 @@ namespace Shop_auth.Models
         public DateTime BuyTime { get; set; }
 
 
-        public virtual ApplicationUser User { get; set; }
+        public string User { get; set; }
 
         public int BookId { get; set; }
         [ForeignKey("BookId")]

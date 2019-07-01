@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Shop_auth.Repos;
+using Shop_auth.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +10,18 @@ namespace Shop_auth.Controllers
 {
     public class HomeController : Controller
     {
+        IBooksRepo booksRepo;
+
+        public HomeController()
+        {
+            booksRepo = new BooksRepo();
+        }
+        [AllowAnonymous]
         public ActionResult Index()
         {
-            return View();
+            return View(booksRepo.GetBooksListViewModel());
         }
+
 
         public ActionResult About()
         {

@@ -34,6 +34,5 @@ namespace Shop_auth.Models
         public DbSet<Book> Books { get; set; }
         public DbSet<Category> Categories { get; set; }
 
-        public System.Data.Entity.DbSet<Shop_auth.ViewModels.BooksListViewModel> BooksListViewModels { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Shop_auth.ViewModels.BooksViewModel>
+﻿@model Shop_auth.ViewModels.BooksViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -16,43 +16,53 @@
             @Html.DisplayNameFor(model => model.List.FirstOrDefault().Cover)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.List.FirstOrDefault().Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.List.FirstOrDefault().ReleaseDate)
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().Category)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.List.FirstOrDefault().Author)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.List.FirstOrDefault().Category)
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().Title)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().ReleaseDate)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model.L) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cover)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReleaseDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Author)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model.List)
+    {
+        <tr>
+            <td>
+                @if (item.Cover != null)
+                {
+                    <img src="data:image;base64,@Convert.ToBase64String(item.Cover)" height="110" width="150" />
+                }
+                else
+                {
+                    <img src="/Pliki/image_404.png" alt="" height="110" width="150" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>

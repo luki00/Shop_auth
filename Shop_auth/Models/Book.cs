@@ -13,6 +13,7 @@ namespace Shop_auth.Models
         public int Id { get; set; }
         public byte[] Cover { get; set; }
         public string Title { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime ReleaseDate { get; set; }
        
 
@@ -20,7 +21,10 @@ namespace Shop_auth.Models
         [ForeignKey("AuthorId")]
         public Author Author { get; set; }
 
-        public virtual ICollection<Category> Category { get; set; }
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
+
         public virtual ICollection<Basket> Baskets { get; set; }
     }
 }
