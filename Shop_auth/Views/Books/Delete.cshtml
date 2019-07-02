@@ -1,65 +1,65 @@
-﻿@model Shop_auth.Models.Book
+﻿@model Shop_auth.ViewModels.BooksViewModel
 
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Usuń</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Czy chcesz usunąć książkę: "@Html.DisplayFor(model => model.Details.Title)" z bazy danych?</h3>
 <div>
-    <h4>Book</h4>
+    @if (Model.Details.Cover != null)
+    {
+        <img src="data:image;base64,@Convert.ToBase64String(Model.Details.Cover)" height="300" width="220" />
+    }
+    else
+    {
+        <img src="/Pliki/image_404.png" alt="" height="220" width="300" />
+    }
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Author.Name)
+            @Html.DisplayNameFor(model => model.Details.Author)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Author.Name)
+            @Html.DisplayFor(model => model.Details.Author)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Category.Name)
+            @Html.DisplayNameFor(model => model.Details.Category)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Category.Name)
+            @Html.DisplayFor(model => model.Details.Category)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Cover)
+            @Html.DisplayNameFor(model => model.Details.Cover)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Cover)
+            @Html.DisplayFor(model => model.Details.Title)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.Details.ReleaseDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ReleaseDate)
+            @Html.DisplayFor(model => model.Details.ReleaseDate)
         </dd>
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Usuń" class="btn btn-default" /> |
+            @Html.ActionLink("Wróć", "Index")
         </div>
     }
 </div>

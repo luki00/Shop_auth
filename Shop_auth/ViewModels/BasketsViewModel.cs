@@ -10,6 +10,7 @@ namespace Shop_auth.ViewModels
     public class BasketsViewModel
     {
         public List<BasketsListViewModel> List { get; set; }
+        public BasketsListViewModel Details { get; set; }
     }
 
     public class BasketsListViewModel {
@@ -22,5 +23,11 @@ namespace Shop_auth.ViewModels
         public bool Accepted { get; set; }
         [Display(Name = "Czas utworzenia")]
         public DateTime BuyTime { get; set; }
+
+
+        [Display(Name = "Użytkownik")]
+        public string User { get; set; }
+        [Display(Name = "Książka")]
+        public int BookId { get; set; }
     }
 }

@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using Shop_auth.Models;
 using Shop_auth.Repos;
+using Shop_auth.ViewModels;
+using Microsoft.AspNet.Identity;
+
 
 namespace Shop_auth.Controllers
 {
@@ -16,11 +19,14 @@ namespace Shop_auth.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         IBasketsRepo basketsRepo;
+        IBooksRepo booksRepo;
 
         public BasketsController()
         {
             basketsRepo = new BasketsRepo();
+            booksRepo = new BooksRepo();
         }
+
         // GET: Baskets
         [Authorize]
         public ActionResult Index()
@@ -71,6 +77,36 @@ namespace Shop_auth.Controllers
             return View(basket);
         }
 
+
+        // GET: Baskets/Order
+        [Authorize]
+        public ActionResult Order(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BooksViewModel book = booksRepo.GetBooksViewModel(id);
+            if (book == null)
+            {
+                return HttpNotFound();
+            }
+            return View(book);
+        }
+
+        // POST: Baskets/Order/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Order(int BookId)
+        {
+            basketsRepo.SetBasketsViewModel(BookId);
+            //throw new HttpException(404, "Not found");
+            return RedirectToAction("Index");
+           // return RedirectToAction("Index");
+        }
+
+
         // GET: Baskets/Edit/5
         [Authorize]
         public ActionResult Edit(int? id)
@@ -79,12 +115,13 @@ namespace Shop_auth.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Basket basket = db.Baskets.Find(id);
+            BasketsViewModel basket = basketsRepo.GetBasketViewModel(id);
+            
             if (basket == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.BookId = new SelectList(db.Books, "Id", "Title", basket.BookId);
+
             return View(basket);
         }
 
@@ -94,16 +131,14 @@ namespace Shop_auth.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult Edit([Bind(Include = "Id,Accepted,BuyTime,BookId")] Basket basket)
+        public ActionResult Edit(BasketsViewModel basket)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(basket).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                basketsRepo.AcceptBasketkViewModel(basket.Details.Id);
             }
-            ViewBag.BookId = new SelectList(db.Books, "Id", "Title", basket.BookId);
-            return View(basket);
+
+            return RedirectToAction("Index");
         }
 
         // GET: Baskets/Delete/5

@@ -10,11 +10,12 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.List.FirstOrDefault().Title)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.List.FirstOrDefault().Cover)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().Title)
+        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.List.FirstOrDefault().Accepted)
         </th>
@@ -28,11 +29,19 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                @if (item.Cover != null)
+                {
+                    <img src="data:image;base64,@Convert.ToBase64String(item.Cover)" height="150" width="110" />
+                }
+                else
+                {
+                    <img src="/Pliki/image_404.png" alt="" height="110" width="150" />
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cover)
+                @Html.DisplayFor(modelItem => item.Title)
             </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Accepted)
             </td>
@@ -40,9 +49,17 @@
                 @Html.DisplayFor(modelItem => item.BuyTime)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @if (!item.Accepted)
+                {
+                    @Html.ActionLink("Zatwierdź", "Edit", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-default btn-lg" })
+                    @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-default btn-lg" })
+                    @Html.ActionLink("Anuluj", "Delete", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-default btn-lg" })
+                }
+                else
+                {
+                    @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-default btn-lg" })
+                }
+
             </td>
         </tr>
     }

@@ -32,7 +32,7 @@ namespace Shop_auth.Controllers
         }
 
         // GET: Books/Details/5
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -54,7 +54,14 @@ namespace Shop_auth.Controllers
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "Name");
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
             return View();
+            /*
+            BooksViewModel lists = booksRepo.GetAuthorCategoryListsViewModel();
+            ViewBag.AuthorId = lists.Details.SelectAuthor;
+            ViewBag.CategoryId = lists.Details.SelectAuthor;
+            */
+        return View();
         }
+
 
         // POST: Books/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -62,17 +69,17 @@ namespace Shop_auth.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Create([Bind(Include = "Id,Cover,Title,ReleaseDate,AuthorId,CategoryId")] Book book)
+        public ActionResult Create(BooksViewModel book, int AuthorId, int CategoryId)
         {
-            if (ModelState.IsValid)
-            {
-                db.Books.Add(book);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            book.Details.AuthorId = AuthorId;
+            book.Details.CategoryId = CategoryId;
+            booksRepo.SetBooksViewModel(book);
 
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "Name", book.AuthorId);
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", book.CategoryId);
+            return RedirectToAction("Index");
+
+
+            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "Name", book.Details.AuthorId);
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", book.Details.CategoryId);
             return View(book);
         }
 
@@ -84,13 +91,13 @@ namespace Shop_auth.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Find(id);
+             BooksViewModel book = booksRepo.GetBooksViewModel(id);
             if (book == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "Name", book.AuthorId);
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", book.CategoryId);
+            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "Name", book.Details.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", book.Details.CategoryId);
             return View(book);
         }
 
@@ -100,17 +107,14 @@ namespace Shop_auth.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit([Bind(Include = "Id,Cover,Title,ReleaseDate,AuthorId,CategoryId")] Book book)
+        public ActionResult Edit(BooksViewModel book, int AuthorId, int CategoryId)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(book).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "Name", book.AuthorId);
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", book.CategoryId);
-            return View(book);
+            book.Details.AuthorId = AuthorId;
+            book.Details.CategoryId = CategoryId;
+
+            booksRepo.EditBookViewModel(book);
+            return RedirectToAction("Index");
+           
         }
 
         // GET: Books/Delete/5
@@ -121,7 +125,7 @@ namespace Shop_auth.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Find(id);
+            BooksViewModel book = booksRepo.GetBooksViewModel(id);
             if (book == null)
             {
                 return HttpNotFound();
@@ -133,11 +137,9 @@ namespace Shop_auth.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int? id)
         {
-            Book book = db.Books.Find(id);
-            db.Books.Remove(book);
-            db.SaveChanges();
+            booksRepo.DeleteBookViewModel(id);
             return RedirectToAction("Index");
         }
 
