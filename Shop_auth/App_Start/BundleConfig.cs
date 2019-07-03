@@ -32,6 +32,12 @@ namespace Shop_auth
             bundles.Add(new StyleBundle("~/Content/datepicker").Include(
                       "~/Content/themes/base/jquery-ui.css",
                       "~/Content/datepicker.css"));
+
+            bundles.Add(new StyleBundle("~/Content/Select2").Include(
+                      "~/Content/css/select2.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/select2").Include(
+                      "~/Scripts/select2.js"));
         }
     }
 }

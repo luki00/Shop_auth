@@ -152,6 +152,11 @@ namespace Shop_auth.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                //var role = _userManager.FindByName("Seller");
+                //user.Roles.Add(role);
+                
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

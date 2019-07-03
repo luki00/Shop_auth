@@ -6,6 +6,8 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/datepicker")
+    @Styles.Render("~/Content/Select2")
+    
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
@@ -20,20 +22,20 @@
                 </button>
                 @Html.ActionLink("e-Biblioteka", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            
-                <div class="navbar-collapse collapse">
-                    @if (User.IsInRole("Admin"))
-                    {
+
+            <div class="navbar-collapse collapse">
+                @if (User.IsInRole("Admin"))
+                {
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Książki", "Index", "Books")</li>
                         <li>@Html.ActionLink("Kategorie", "Index", "Categories")</li>
                         <li>@Html.ActionLink("Autorzy", "Index", "Authors")</li>
                     </ul>
-                    }
-                    @Html.Partial("_LoginPartial")
-                </div>
-            
+                }
+                @Html.Partial("_LoginPartial")
             </div>
+
+        </div>
     </div>
     <div class="container body-content">
         @RenderBody()
@@ -46,7 +48,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
-
+    @Scripts.Render("~/bundles/select2")
     @RenderSection("scripts", required: false)
 </body>
 </html>

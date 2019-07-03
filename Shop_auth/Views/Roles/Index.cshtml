@@ -1,0 +1,61 @@
+﻿@model Shop_auth.ViewModels.RolesViewModel
+
+@{
+    ViewBag.Title = "Uprawnienia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Uprawnienia</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().SelectedRolesNames)
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    @{ int a = 0; }
+    @foreach (var item in Model.List)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+
+                @using (Html.BeginForm("Index", "Roles", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+
+                    <input type="hidden" id="UserId" name="UserId" value=@item.UserId>
+                    @Html.ListBox("RolesIds", new MultiSelectList(Model.AllRoles, "RoleName", "RoleName", item.SelectedRolesNames), htmlAttributes: new { @id = "RolesIds" + a, @class = "select", @style = "width: 600px;" });
+
+
+                    <input type="submit" value="Zmień uprawnienia" />
+                }
+            </td>
+
+        </tr>
+
+        a += 1;
+    }
+
+</table>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".select").select2();
+        });
+
+
+    </script>
+}
+

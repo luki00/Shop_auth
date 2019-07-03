@@ -32,8 +32,6 @@ namespace Shop_auth.Repos
             };
         }
 
-        /////////////////////////////////////////////////////////////
-
 
 
         public BasketsViewModel GetBasketViewModel(int? id)
@@ -90,7 +88,6 @@ namespace Shop_auth.Repos
         }
 
 
-        ////////////////////////////////////////////////////////////
         public bool DeleteBasketViewModel(int? id)
         {
 
